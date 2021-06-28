@@ -4,12 +4,25 @@
     <div class="container offset-4">
         <section class="row new-post">
             <div class="col-md-6 col-md-offset-3">
+                @if (session()->has('message'))
+                    <div class="alert alert-success">{{ session()->get('message') }} </div>
+                @elseif ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li> {{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <header>
                     <h3>What do you have to say?</h3>
                 </header>
-                <form action="">
+                <form action="{{ route('post.store') }}" method="POST">
+                    @csrf
                     <div class="form-group">
-                        <textarea class="form-control" name="new-post" id="new-post" rows="5"
+                        <textarea class="form-control" name="post" id="new-post" rows="5"
                             placeholder="Your Post"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Create Post</button>
